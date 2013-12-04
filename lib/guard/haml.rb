@@ -11,7 +11,8 @@ module Guard
       opts = {
         notifications:        true,
         default_ext:          'html',
-        auto_append_file_ext: false
+        auto_append_file_ext: false,
+        scope:                nil
       }.merge(opts)
 
       super(opts)
@@ -62,7 +63,7 @@ module Guard
       begin
         content = File.new(file).read
         engine  = ::Haml::Engine.new(content, (options[:haml_options] || {}))
-        engine.render
+        engine.render(options[:scope])
       rescue StandardError => error
         message = "HAML compilation failed!\nError: #{error.message}"
         ::Guard::UI.error message
